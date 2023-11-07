@@ -256,7 +256,7 @@ def Auxiliary_LoadModule():
     
 
 def Auxiliary_READConfig():# 读取外置Config.ini文件并更新
-    global USEMODULE,HTTPPROXY,HTTPSPROXY,ALLPROXY,USEBGMAPI,USETMDBAPI,USELINK,LINKFAILSUSEMOVEFLAGS,USETITLTOEP,PRINTLOGFLAG,RMLOGSFLAG,USEBOTFLAG,TIMELAPSE,SEEPSINGLECHARACTER,JELLYFINFORMAT,HELP
+    global USEMODULE,HTTPPROXY,HTTPSPROXY,ALLPROXY,USEBGMAPI,USETMDBAPI,USELINK,LINKFAILSUSEMOVEFLAGS,USETITLTOEP,PRINTLOGFLAG,RMLOGSFLAG,USEBOTFLAG,TIMELAPSE,SEEPSINGLECHARACTER,JELLYFINFORMAT,HELP,MATCHORGANIZED
     USEMODULE = None
     HTTPPROXY = '' # Http代理
     HTTPSPROXY = '' # Https代理
@@ -272,6 +272,7 @@ def Auxiliary_READConfig():# 读取外置Config.ini文件并更新
     USEBOTFLAG = False # 使用TgBot进行通知
     TIMELAPSE = 0 # 延时处理番剧
     SEEPSINGLECHARACTER = False
+    MATCHORGANIZED = False #对已经整理为S0E0这种格式的番剧重新匹配并整理，慎开
     HELP = None # HELP 
     if path.isfile(f'{PyPath}{Separator}config.ini'):
         with open(f'{PyPath}{Separator}config.ini','r',encoding='UTF-8') as ff:
@@ -333,6 +334,10 @@ def Auxiliary_WriteLog():# 写log文件
 
 def Auxiliary_UniformOTSTR(File):# 统一意外字符
     NewFile = convert(File,'zh-hans')# 繁化简
+    if MATCHORGANIZED == True:
+        NewFile = sub(r'^(S\d{1,2})?(E\d{1,4})\.?(.+)(?=\..+$)',r'\3\1\2',NewFile,flags=0)   #处理s00e00在开头名字， 比如使用该脚本处理过的文件也再次处理
+        NewFile = sub(r'(?<!\d)\.(?!\d|(mkv|mp4|ass|srt|log))',' ',NewFile,flags=0) #将.替换为空格，但排除前或后有数字的和文件格式后缀
+        NewFile = sub(r'(?<=.)(S\d{1,2})?(?<=.)E(\d{1,4})',r'\1 \2E ',NewFile,flags=I)
     NewUSTRFile = sub(r',|，| ','-',NewFile,flags=I) 
     NewUSTRFile = sub('[^a-z0-9\s&/\-:：.\(\)（）《》\u4e00-\u9fa5\u3040-\u309F\u30A0-\u30FF\u31F0-\u31FF]','=',NewUSTRFile,flags=I)
     #异种剧集统一
@@ -434,7 +439,7 @@ def Auxiliary_ScanDIR(Dir,Flag=0):# 扫描文件目录,返回文件列表
     VDFileList = []
     LogsFileList = []
     for File in listdir(Dir):# 扫描目录,并按文件类型分类
-        if Flag == 0 and search(r'S\d{1,2}E\d{1,4}',File,flags=I) == None:
+        if Flag == 0 and ((MATCHORGANIZED == True) or (search(r'S\d{1,2}E\d{1,4}',File,flags=I) == None)):   #判断是否对已整理的文件进行再次整理
             Scan(Dir,File)
         elif Flag == 1 and search(r'S\d{1,2}E\d{1,4}',File,flags=I) != None:
             Scan(Dir,File)
