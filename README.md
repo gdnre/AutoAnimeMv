@@ -1,3 +1,28 @@
+为了满足一些特殊的命名而添加了一点匹配规则，可以匹配已经被命名为S00E00的剧集并进行刮削。
+配置文件中添加如下条目↓
+ 
+    MATCHORGANIZED = True #对已经整理为S0E0这种格式的番剧名重新匹配
+原脚本中的逻辑不会匹配e00这种格式的剧集标题，MATCHORGANIZED设为True后，会匹配这样格式的文件名并进行替换：
+
+    1.S00E00xxxx.mkv → xxxxS00E00.mkv 或 S00E00.xxx.x.mkv → xxx.xS00E00.mkv ，总之就是非常不过大脑的将季集放到扩展名前面
+    
+    2.将前后都有非数字字符的"."，替换成空格，为什么要这么搞呢，因为有好心的字幕组帮忙整理了文件名，但这格式根本没法进行刮削😭，
+      为了防止小数点被改成空格，因此只会替换前后都不是数字的。
+      比如这样的：The.Apothecary.Diaries.S01E01.Maomao.1080p.NF.WEB-DL.AAC2.0.H.264-VARYG.mkv
+    
+    3.xxxxS00E00xxx.mkv → xxxxS00 00E xxx.mkv ，将剧集替换成00E并在两端加上空格，剩下的处理逻辑原作者已经整好了。
+
+我预计的使用场景是配合autobangumi，自己在qbit里通过rss手动选择要下哪些番，防止不小心订阅多了自动下载来占空间，autobgm命名格式为<动画名>S00E00.mkv，但它不对手动下载的番剧自动创建子文件夹，因此使用这个可配置性更高的工具进行辅助。
+
+
+
+再次提醒，如果本工具能正常识别，就不要选择用我这个版本或者不要将MATCHORGANIZED设为True！
+
+
+
+
+
+以下是原作者仓库说明：
 ## | AutoAnimeMV:超轻量化快速部署看番遥遥领先！
 <div align="center">
   <a href="https://github.com/Abcuders/AutoAnimeMV">
