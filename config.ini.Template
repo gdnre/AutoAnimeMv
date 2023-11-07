@@ -33,4 +33,4 @@ QBPASSWORD = 'Syn123456!' # Qb密码
 # 附加Config
 TIMELAPSE = 0 # 延时处理番剧
 SEEPSINGLECHARACTER =False # SE EP单字符模式
-MATCHORGANIZED = True #对已经整理为S0E0这种格式的番剧名重新匹配
+MATCHORGANIZED = False #对已经整理为S0E0这种格式的番剧名重新匹配
