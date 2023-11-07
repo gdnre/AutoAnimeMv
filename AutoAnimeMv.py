@@ -186,7 +186,7 @@ def Auxiliary_Help(): # Help
     ██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║  ██║██║ ╚████║██║██║ ╚═╝ ██║███████╗██║ ╚═╝ ██║ ╚████╔╝ 
     ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝     ╚═╝╚══════╝╚═╝     ╚═╝  ╚═══╝                                                                                            
     '''
-    HELP = '\n* 欢迎使用AutoAnimeMv，这是一个番剧自动识别剧名剧集+自动重命名+自动整理的工具\n* Github URL：https://github.com/Abcuders/AutoAnimeMv\n* 一般使用方法请见Github Docs，以下是不常用的使用方法：\n    python3 AutoAnimeMv.py [help] [updata] [fixSE]\n* 参数解释：\n    help 打印出Help {help}\n    updata,update  更新AutoAnimeMv.py {updata}\n    fixSE 修复错乱的剧季 {fixSE 需要修复的番剧目录 需要修复的剧季 修复之后的剧季}'
+    HELP = '\n* 欢迎使用AutoAnimeMv，这是一个番剧自动识别剧名剧集+自动重命名+自动整理的工具\n* Github URL：https://github.com/Abcuders/AutoAnimeMv\n* 一般使用方法请见Github Docs，有两种模式：\n   1.批处理模式，会将目录内的番剧自动整理并放到"番剧所在目录/分类/番剧名/剧季/剧集.mkv",\n     其中分类可以是相对路径，比如设置为"../"，就会将"番剧名"放到"番剧所在目录"的同一级目录。\n\n    python3 AutoAnimeMv.py 番剧所在目录 [分类]\n\n   2.qbit模式，在qbit中设置下载完成后执行程序，并填入下面的命令，\n    注意AutoAnimeMv.py要填写脚本的绝对路径，传入的参数为qbit的下载预设参数。\n    参数解释：%D:保存路径 %N:Torrent名称 %C:文件数 %L:分类(也可以用相对路径)\n\n    python3 AutoAnimeMv.py "%D" "%N" "%C" "%L"(可选)\n\n* 以下是不常用的使用方法：\n    python3 AutoAnimeMv.py [help] [updata] [fixSE]\n* 参数解释：\n    help 打印出Help {help}\n    updata,update  更新AutoAnimeMv.py {updata}\n    fixSE 修复错乱的剧季 {fixSE 需要修复的番剧目录 需要修复的剧季 修复之后的剧季}\n* 配置文件config.ini：windows自行重命名文件，linux中执行下列命令：\n    cp config.ini.Template config.ini'
     print(Logo + '\n' + '-'*100 +  HELP)
     quit()
 
