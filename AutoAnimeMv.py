@@ -89,6 +89,7 @@ def Processing_Mode(ArgvData:list):# 模式选择
 def Processing_Main(LorT):# 核心处理
     if type(LorT) == tuple: # (视频文件列表,字幕文件列表)
         for File in LorT[0]:
+            try:
                 flag = Processing_Identification(File)
                 if flag == None:
                     break
@@ -96,14 +97,19 @@ def Processing_Main(LorT):# 核心处理
                 ASSList = Auxiliary_IDEASS(RAWName,RAWSE,RAWEP,LorT[1])
                 ApiName = Auxiliary_Api(RAWName)
                 Sorting_Mv(File,RAWName,SE,EP,ASSList,ApiName)
+            except Exception:
+                continue
     else:# 唯一有效的文件列表
         for File in LorT:
-            flag = Processing_Identification(File)
-            if flag == None:
-                break
-            SE,EP,RAWSE,RAWEP,RAWName = flag
-            ApiName = Auxiliary_Api(RAWName)
-            Sorting_Mv(File,RAWName,SE,EP,None,ApiName)
+            try:
+                flag = Processing_Identification(File)
+                if flag == None:
+                    break
+                SE,EP,RAWSE,RAWEP,RAWName = flag
+                ApiName = Auxiliary_Api(RAWName)
+                Sorting_Mv(File,RAWName,SE,EP,None,ApiName)
+            except Exception:
+                continue
 
 def Processing_Identification(File:str):# 识别
     NewFile = Auxiliary_RMSubtitlingTeam(Auxiliary_RMOTSTR(Auxiliary_UniformOTSTR(File)))# 字符的统一加剔除
@@ -393,7 +399,8 @@ def Auxiliary_IDEEP(File):# 识别剧集
         else:
             Episodes = findall(r'[^0-9a-z.\u4e00-\u9fa5\u0800-\u4e00][0-9]{1,4}[^0-9a-uw-z.\u4e00-\u9fa5\u0800-\u4e00]',File[::-1],flags=I)[0][::-1].strip(" =-_eEv")
     except IndexError:
-        Auxiliary_Exit('未匹配出剧集,请检查(程序目前不支持电影动漫)')
+        Auxiliary_Log('未匹配出剧集,请检查(程序目前不支持电影动漫)','WARNING')
+        return Episodes
     else:
         #Auxiliary_Log(f'匹配出的剧集 ==> {Episodes}','INFO')
         return Episodes
